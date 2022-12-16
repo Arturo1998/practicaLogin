@@ -26,8 +26,38 @@
     },
     {
       "id": 5,
-      "usuario": "asd",
-      "contraseña": "asd",
+      "usuario": "Pedro",
+      "contraseña": "1234",
+      "nivel": "admin"
+    },
+    {
+      "id": 6,
+      "usuario": "Pablo",
+      "contraseña": "1234",
+      "nivel": "pro"
+    },
+    {
+      "id": 7,
+      "usuario": "Edu",
+      "contraseña": "1234",
+      "nivel": "pro"
+    },
+    {
+      "id": 8,
+      "usuario": "Miguel",
+      "contraseña": "1234",
+      "nivel": "pro"
+    },
+    {
+      "id": 9,
+      "usuario": "Lucia",
+      "contraseña": "1234",
+      "nivel": "usu"
+    },
+    {
+      "id": 10,
+      "usuario": "Fati",
+      "contraseña": "1234",
       "nivel": "admin"
     }
   ]

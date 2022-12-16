@@ -1,47 +1,34 @@
 <template>
   <div v-if="visible">
-    <h1>Login Usuarios</h1>
-    <div class="flex flex-col w-40">
-      <input
-        class="border-2 border-gray-800 hover:bg-cyan-100"
-        type="text"
-        placeholder="Usuario"
-        v-model="usuario"
-      />
-      <input
-        class="border-2 border-gray-800 hover:bg-cyan-100"
-        type="password"
-        placeholder="Password"
-        v-model="contraseña"
-      />
-    </div>
-    <div class="">
-      <button
-        class="border-2 border-gray-800 rounded bg-cyan-400 hover:bg-cyan-600"
-        @click="getUsuario"
-      >
-        LOG IN
-      </button>
-    </div>
+    <MiLogin @hacerLogin="getUsuario" />
   </div>
   <div v-else class="flex">
-    <MiRegistro @cerrar="salir" :usuario="usuarios" />
+    <MiRegistro @cerrar="salir" :usuario="usuarios" :listaUsuario="listaApi" />
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
+import MiLogin from "./components/MiLogin.vue";
 import MiRegistro from "./components/MiRegistro.vue";
 
-let usuarios = ref({});
-let usuario = ref("");
-let contraseña = ref("");
+let usuarios = ref([]);
+let listaApi = ref([]);
 let visible = ref(true);
 
-const getUsuario = async () => {
+onMounted(() => {
+  getLista();
+});
+
+const getLista = async () => {
+  const respuesta = await axios.get("http://localhost:3000/personas");
+  listaApi.value = respuesta.data;
+};
+
+const getUsuario = async (data1, data2) => {
   const respuesta = await axios.get(
-    `http://localhost:3000/personas?usuario=${usuario.value}&contraseña=${contraseña.value}`
+    `http://localhost:3000/personas?usuario=${data1}&contraseña=${data2}`
   );
   usuarios.value = respuesta.data;
   usuarios.value.length > 0
@@ -51,7 +38,6 @@ const getUsuario = async () => {
 
 const salir = (data) => {
   visible.value = data;
-  console.log(visible.value);
 };
 </script>
 

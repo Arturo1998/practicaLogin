@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h1>Ha accedido correctamente, su nivel es {{ persona[0].nivel }}</h1>
+    <h1>
+      Hola {{ persona[0].usuario }}, ha accedido correctamente. Su nivel es
+      {{ persona[0].nivel }}.
+    </h1>
     <button
       class="ml-4 border-2 border-gray-800 rounded bg-cyan-400 hover:bg-cyan-600"
       @click="chao"
@@ -39,6 +42,14 @@
         Registrar
       </button>
     </div>
+    <div class="border-2 border-cyan-400 mt-4 text-center">
+      <ul v-for="item in lista" :key="item.id">
+        <li class="hover:bg-cyan-400 border-2 border-cyan-300">
+          {{ item.usuario }} - {{ item.nivel }}
+        </li>
+        <button class="bg-red-300 rounded">Borrar</button>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -51,32 +62,51 @@ let alta = ref(false);
 
 const props = defineProps({
   usuario: {
-    type: Object,
+    type: Array,
+  },
+  listaUsuario: {
+    type: Array,
   },
 });
 
 const persona = ref(props.usuario);
+const lista = ref(props.listaUsuario);
 const nombre = ref("");
 const password = ref("");
 const nivel = ref("");
+let usuarioExiste = ref([]);
 const emits = defineEmits(["cerrar", "registrar"]);
 
 const chao = () => {
   emits("cerrar", logOut.value);
 };
+/*
+const registrar = () => {
+  emits("registrar", nombre.value, password.value, nivel.value);
+};
+*/
 
 const aniadeUsuario = () => {
   alta.value = !alta.value;
+  console.log(lista.value);
 };
 
 const registro = async () => {
   try {
-    await axios.post(" http://localhost:3000/personas", {
-      id: "",
-      usuario: nombre.value,
-      contraseña: password.value,
-      nivel: nivel.value,
-    });
+    const respuesta = await axios.get(
+      `http://localhost:3000/personas?usuario=${nombre.value}`
+    );
+    usuarioExiste.value = respuesta.data;
+    if (usuarioExiste.value.length > 0) {
+      alert("El nombre de usuario está en uso");
+    } else {
+      await axios.post(" http://localhost:3000/personas", {
+        id: "",
+        usuario: nombre.value,
+        contraseña: password.value,
+        nivel: nivel.value,
+      });
+    }
   } catch (e) {
     console.log(e);
   }
