@@ -75,16 +75,11 @@ const nombre = ref("");
 const password = ref("");
 const nivel = ref("");
 let usuarioExiste = ref([]);
-const emits = defineEmits(["cerrar", "registrar"]);
+const emits = defineEmits(["cerrar", "registrar", "borrar"]);
 
 const chao = () => {
   emits("cerrar", logOut.value);
 };
-/*
-const registrar = () => {
-  emits("registrar", nombre.value, password.value, nivel.value);
-};
-*/
 
 const aniadeUsuario = () => {
   alta.value = !alta.value;
